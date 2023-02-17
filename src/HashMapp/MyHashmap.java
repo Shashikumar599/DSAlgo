@@ -5,9 +5,10 @@ import com.sun.jdi.Value;
 import java.util.HashMap;
 
 public class MyHashmap<K,V> {
-       private static  int size=1<<4;
+       private static  int size=8;
+       private int currentsize;
 //       private static int maxsize=1<<30;
-
+       private static double alpha=0.75;
        Entry [] hashmap;
        public MyHashmap(){
 //             hashmap=(Entry [])new Object[size];
@@ -42,13 +43,30 @@ public class MyHashmap<K,V> {
                this.Value=Value;
            }
        }
+       void rehash(){
+            Entry [] temp=hashmap;
+
+            hashmap=new Entry[size*2];
+            size=size*2;
+            currentsize=0;
+            for(int i=0;i<size/2;i++){
+                System.out.println(i);
+                Entry node=temp[i];
+                while(node!=null){
+                    add((K) node.key, (V) node.Value);
+                    node=node.next;
+                }
+            }
+//            size=size*2;
+       }
        public  void add(K Key ,V Value){
            int l=Key.hashCode();
-           l=l^(l>>>16);
-           l=l%size;
+//           l=l^(l>>>16);
+           l=l&(size-1);
            Entry node=hashmap[l];
            if(node==null){
                hashmap[l]=new Entry(Key,Value);
+               currentsize++;
            }
            else{
                Entry Previousnode=null;
@@ -63,30 +81,34 @@ public class MyHashmap<K,V> {
                if(node==null){
                    node=new Entry(Key,Value);
                    Previousnode.next=node;
+                   currentsize++;
                }
            }
+           if(currentsize>=alpha*size){
+               rehash();
+           }
        }
+
        public void remove(K Key,V Value){
-           int l=Key.hashCode();
-           l=l^(l>>>16);
-           l=l%size;
            remove(Key);
        }
        public void remove(K Key){
            int l=Key.hashCode();
-           l=l^(l>>>16);
-           l=l%size;
+//           l=l^(l>>>16);
+           l=l&(size-1);
            Entry node=hashmap[l];
            if(node==null)
                return;
            if(node.key==Key){
                hashmap[l]=node.next;
+               currentsize--;
            }
            else{
                Entry Pnode=null;
                while(node!=null){
                    if(node.key==Key){
                        Pnode.next=node.next;
+                       currentsize--;
                        break;
                    }
                    Pnode=node;
@@ -96,8 +118,8 @@ public class MyHashmap<K,V> {
        }
        public  V getValue(K Key){
            int l=Key.hashCode();
-           l=l^(l>>>16);
-           l=l%size;
+//           l=l^(l>>>16);
+           l=l&(size-1);
            Entry node=hashmap[l];
            while(node!=null){
                if(node.key==Key){
