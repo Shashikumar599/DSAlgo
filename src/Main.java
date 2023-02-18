@@ -1,11 +1,50 @@
 import HashMapp.MyHashmap;
-
+import Thread.*;
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         System.out.println("Hello world!");
-        MyHashmap<Integer,String> map=new MyHashmap();
+
+
+        Thread b=new Thread(new Thread2());
+//        a.start();
+
+        Thread A=new Thread1("A");
+        Thread B=new Thread1("B");
+        Thread C=new Thread1("C");
+        Thread D=new Thread1("D");
+        System.out.println(A.getName());
+
+        ExecutorService pl = Executors.newFixedThreadPool(3);
+        pl.execute(A);
+        pl.execute(B);
+        pl.execute(C);
+        pl.execute(D);
+//        System.out.println(Thread.currentThread().getName());
+//        pl.execute(A);
+//        pl.execute(B);
+//        pl.execute(C);
+//        pl.execute(D);
+
+
+        pl.shutdown();
+//        ExecutorService pl1 = Executors.newFixedThreadPool(3);
+//        pl1.execute(A);
+//        pl1.execute(B);
+//        pl1.execute(C);
+//        pl1.execute(D);
+//        pl1.shutdown();
+//        a.join();
+//        b.start()
+//
+//        ;
+//        System.out.println(Thread.currentThread().getName());
+
+
+       /* MyHashmap<Integer,String> map=new MyHashmap();
 
         map.add(1,"Shashi");
         map.add(2,"Prateek");
@@ -52,7 +91,7 @@ public class Main {
         System.out.println(map.getValue(20));
         System.out.println(map.getValue(30));
         System.out.println(map.getValue(40));
-        System.out.println(map.getValue(-4));
+        System.out.println(map.getValue(-4));*/
 
 
     }
