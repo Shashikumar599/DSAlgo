@@ -9,20 +9,32 @@ public class Main {
         System.out.println("Hello world!");
 
 
-        Thread b=new Thread(new Thread2());
+//        Thread b=new Thread(new Thread2());
 //        a.start();
 
         Thread A=new Thread1("A");
         Thread B=new Thread1("B");
         Thread C=new Thread1("C");
         Thread D=new Thread1("D");
-        System.out.println(A.getName());
+//        System.out.println(A.getName());
 
-        ExecutorService pl = Executors.newFixedThreadPool(3);
-        pl.execute(A);
-        pl.execute(B);
-        pl.execute(C);
-        pl.execute(D);
+        ExecutorService pl = Executors.newFixedThreadPool(10);
+
+        ProduceConsume produceConsume=new ProduceConsume();
+        Thread a=new Thread3(produceConsume);
+        Thread b=new Thread4(produceConsume);
+
+        for(int i=0;i<10;i++){
+            if(i%2==0)
+            pl.execute(a);
+            else
+                pl.execute(b);
+        }
+
+
+
+
+
 //        System.out.println(Thread.currentThread().getName());
 //        pl.execute(A);
 //        pl.execute(B);
