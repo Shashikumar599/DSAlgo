@@ -11,12 +11,17 @@ public class Thread1 extends Thread{
     }
 
     @Override
-    public void run() {
+    public void run()  {
 
         SimpleDateFormat sdf = new SimpleDateFormat("hh : mm : ss");
         for(int i=0;i<5;i++) {
             Date dt = new Date();
             System.out.println(task +" is running time is  "+ sdf.format(dt));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             try{
             Thread.sleep(1000);
             }
