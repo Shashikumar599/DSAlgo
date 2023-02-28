@@ -1,5 +1,8 @@
 package Systemdesign;
 
+import java.util.HashMap;
+import java.util.Hashtable;
+
 public class AnotherMain {
 
     public static void main(String[] args){
